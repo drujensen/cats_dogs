@@ -1,0 +1,23 @@
+name: cats_dogs
+version: 0.1.0
+
+authors:
+  - Dru Jensen <drujensen@gmail.com>
+
+targets:
+  cats_dogs:
+    main: src/cats_dogs.cr
+
+crystal: 0.31.0
+
+license: MIT
+
+dependencies:
+  shainet:
+    github: NeuraLegion/shainet
+
+  stumpy_png:
+    github: stumpycr/stumpy_png
+
+  magickwand-crystal:
+    github: blocknotes/magickwand-crystal
