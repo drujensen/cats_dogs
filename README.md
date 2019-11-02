@@ -7,6 +7,9 @@ Cats vs Dogs Kaggle Competition using Crystal and NeuraLegion's ShaiNet library
 ## Installation
 
 Install crystal and run `shards install` to install the shards
+Download the training data and unzip in the root directory of the project.
+
+https://www.kaggle.com/c/dogs-vs-cats-redux-kernels-edition/data
 
 ## Usage
 
