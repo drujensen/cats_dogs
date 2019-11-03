@@ -7,7 +7,8 @@ outcome = {
 }
 
 # data structures to hold the input and results
-inputs = Array(Array(Float64)).new
+# Images / Channels / Rows / Columns / value
+inputs = Array(Array(Array(Array(Float64)))).new
 outputs = Array(Array(Float64)).new
 
 # load images
@@ -16,23 +17,32 @@ outputs = Array(Array(Float64)).new
 
   files.each do |file_name|
     image = Image.new(file_name)
-    row_arr = Array(Float64).new
-    (0...image.height).each do |y|
-      (0...image.width).each do |x|
-        value = image.grey_scale(x, y)
-        row_arr << value
+    channel_arr = Array(Array(Array(Float64))).new
+    (0..2).each do |c|
+      row_arr = Array(Array(Float64)).new
+      (0...image.height).each do |y|
+        col_arr = Array(Float64).new
+        (0...image.width).each do |x|
+          col_arr << image.data(x, y)[c]
+        end
+        row_arr << col_arr
       end
+      channel_arr << row_arr
     end
-    inputs << row_arr
+    inputs << channel_arr
     outputs << outcome[type]
   end
 end
 
-training = SHAInet::CNNData.new(inputs, outputs)
-training.data_pairs.shuffle!
+alias Pair = {input: Array(Array(Array(Float64))), output: Array(Float64)}
+
+data_pairs = Array(Pair).new
+inputs.each_with_index do |input, i|
+  data_pairs << {input: input, output: outputs[i]}
+end
 
 model = SHAInet::CNN.new
-model.add_input([height = 48, width = 48, channels = 1])
+model.add_input([height = 48, width = 48, channels = 3])
 
 model.add_conv(
   filters_num: 20,
@@ -50,28 +60,28 @@ model.add_conv(
   activation_function: SHAInet.none)
 model.add_maxpool(pool: 2, stride: 2)
 
-model.add_fconnect(l_size: 12, activation_function: SHAInet.sigmoid)
+model.add_fconnect(l_size: 12, activation_function: SHAInet.relu)
+
+model.add_fconnect(l_size: 2, activation_function: SHAInet.sigmoid)
 
 # optimization settings
 model.learning_rate = 0.005
 model.momentum = 0.02
 
-model.inspect(:dimensions)
-
 # train the network
 model.train_batch(
-  data: training.data_pairs,
-  training_type: :sgdm,
+  data: data_pairs,
+  training_type: :adam,
   cost_function: :mse,
-  epochs: 25,
+  epochs: 5,
   error_threshold: 0.0001,
-  log_each: 100,
-  mini_batch_size: 32)
+  log_each: 1,
+  mini_batch_size: 25)
 
 # model.save_to_file("./network/model.nn")
 
 correct_answers = 0
-training.data_pairs.each do |data_point|
+data_pairs.each do |data_point|
   result = model.run(data_point[:input], stealth: true)
   if (result.index(result.max) == data_point[:output].index(data_point[:output].max))
     correct_answers += 1
@@ -79,6 +89,6 @@ training.data_pairs.each do |data_point|
 end
 
 # Print the layer activations
-# model.inspect("activations")
-# puts "We managed #{correct_answers} out of #{training.data_pairs.size} total"
-# puts "Cnn output: #{model.output}"
+model.inspect(:dimensions)
+puts "We managed #{correct_answers} out of #{data_pairs.size} total"
+puts "Cnn output: #{model.output}"

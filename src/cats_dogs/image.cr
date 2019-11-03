@@ -23,7 +23,7 @@ class Image
 
   def data(x : Int32, y : Int32)
     r, g, b = @canvas.[x, y].to_rgb8
-    return r.to_i8, g.to_i8, b.to_i8
+    return [r.to_f, g.to_f, b.to_f]
   end
 
   def grey_scale(x : Int32, y : Int32)
