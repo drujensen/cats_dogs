@@ -1,12 +1,16 @@
 version: 1.0
 shards:
+  apatite:
+    github: watzon/apatite
+    commit: 420573592abf82fa139f6878491fa64f51fee55c
+
   magickwand-crystal:
     github: blocknotes/magickwand-crystal
     version: 0.3.0
 
   shainet:
-    github: NeuraLegion/shainet
-    version: 2.3.0
+    path: /Users/drujensen/workspace/crystal/deeplearning/shainet
+    version: 2.2.0
 
   stumpy_core:
     github: stumpycr/stumpy_core

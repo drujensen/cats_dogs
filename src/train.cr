@@ -64,6 +64,10 @@ model.add_fconnect(l_size: 12, activation_function: SHAInet.relu)
 
 model.add_fconnect(l_size: 2, activation_function: SHAInet.sigmoid)
 
+model.add_softmax
+
+model.inspect :dimensions
+
 # optimization settings
 model.learning_rate = 0.005
 model.momentum = 0.02
@@ -73,22 +77,37 @@ model.train_batch(
   data: data_pairs,
   training_type: :adam,
   cost_function: :mse,
-  epochs: 5,
+  epochs: 3,
   error_threshold: 0.0001,
   log_each: 1,
-  mini_batch_size: 25)
+  mini_batch_size: 100)
 
 # model.save_to_file("./network/model.nn")
 
-correct_answers = 0
-data_pairs.each do |data_point|
-  result = model.run(data_point[:input], stealth: true)
-  if (result.index(result.max) == data_point[:output].index(data_point[:output].max))
-    correct_answers += 1
+# determine accuracy
+tn = tp = fn = fp = 0
+
+inputs.each_with_index do |test, idx|
+  results = model.run(test)
+  if results[0] < 0.5
+    if outputs[idx][0] == 0.0
+      tn += 1
+    else
+      fn += 1
+    end
+  else
+    if outputs[idx][0] == 0.0
+      fp += 1
+    else
+      tp += 1
+    end
   end
 end
 
-# Print the layer activations
-model.inspect(:dimensions)
-puts "We managed #{correct_answers} out of #{data_pairs.size} total"
-puts "Cnn output: #{model.output}"
+puts "Training size: #{outputs.size}"
+puts "----------------------"
+puts "TN: #{tn} | FP: #{fp}"
+puts "----------------------"
+puts "FN: #{fn} | TP: #{tp}"
+puts "----------------------"
+puts "Accuracy: #{(tn + tp) / outputs.size.to_f}"
