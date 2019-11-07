@@ -14,8 +14,9 @@ license: MIT
 
 dependencies:
   shainet:
-    # github: drujensen/shainet
-    path: /Users/drujensen/workspace/crystal/deeplearning/shainet
+    github: NeuraLegion/shainet
+    branch: master
+    # path: /Users/drujensen/workspace/crystal/deeplearning/shainet
 
   stumpy_png:
     github: stumpycr/stumpy_png

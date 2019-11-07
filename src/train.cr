@@ -14,8 +14,11 @@ outputs = Array(Array(Float64)).new
 # load images
 ["cat", "dog"].each do |type|
   files = Dir["./train/#{type}.*.png"]
-
+  limit = 0
   files.each do |file_name|
+    limit += 1
+    break if limit > 500
+
     image = Image.new(file_name)
     channel_arr = Array(Array(Array(Float64))).new
     (0..2).each do |c|
@@ -45,22 +48,25 @@ model = SHAInet::CNN.new
 model.add_input([height = 48, width = 48, channels = 3])
 
 model.add_conv(
-  filters_num: 20,
+  filters_num: 32,
   window_size: 3,
   stride: 1,
   padding: 1,
-  activation_function: SHAInet.none)
-model.add_maxpool(pool: 2, stride: 2)
+  activation_function: SHAInet.relu)
 
 model.add_conv(
-  filters_num: 20,
+  filters_num: 64,
   window_size: 3,
   stride: 1,
   padding: 1,
-  activation_function: SHAInet.none)
-model.add_maxpool(pool: 2, stride: 2)
+  activation_function: SHAInet.relu)
 
-model.add_fconnect(l_size: 12, activation_function: SHAInet.relu)
+model.add_conv(
+  filters_num: 128,
+  window_size: 3,
+  stride: 1,
+  padding: 1,
+  activation_function: SHAInet.relu)
 
 model.add_fconnect(l_size: 2, activation_function: SHAInet.sigmoid)
 
@@ -77,10 +83,10 @@ model.train_batch(
   data: data_pairs,
   training_type: :adam,
   cost_function: :mse,
-  epochs: 3,
+  epochs: 5,
   error_threshold: 0.0001,
   log_each: 1,
-  mini_batch_size: 100)
+  mini_batch_size: 25)
 
 # model.save_to_file("./network/model.nn")
 

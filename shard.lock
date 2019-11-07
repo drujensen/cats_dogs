@@ -9,8 +9,8 @@ shards:
     version: 0.3.0
 
   shainet:
-    path: /Users/drujensen/workspace/crystal/deeplearning/shainet
-    version: 2.2.0
+    github: NeuraLegion/shainet
+    commit: 456509b9983772fb710df9a50b68807af66c491d
 
   stumpy_core:
     github: stumpycr/stumpy_core
