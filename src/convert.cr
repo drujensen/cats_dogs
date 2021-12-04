@@ -4,7 +4,7 @@ LibMagick.magickWandGenesis
 wand = LibMagick.newMagickWand
 
 ["cat", "dog"].each do |type|
-  files = Dir["./train/#{type}.*.jpg"]
+  files = Dir["./test/#{type}.*.jpg"]
 
   files.each do |file_name|
     puts "reading #{file_name}"

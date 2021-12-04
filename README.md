@@ -14,8 +14,12 @@ https://www.kaggle.com/c/dogs-vs-cats-redux-kernels-edition/data
 ## Usage
 
 run `crystal src/convert.cr` to convert the training images to 50x50 greyscale
-run `crystal src/train.cr` to build the model
-run `crystal src/test.cr` to test the model
+
+To build and run using threads:
+```
+crystal build -Dpreview_mt --release src/train.cr -o ./bin/train
+CRYSTAL_WORKERS=16 ./bin/train
+```
 
 ## Contributing
 

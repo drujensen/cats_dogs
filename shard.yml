@@ -8,18 +8,14 @@ targets:
   cats_dogs:
     main: src/cats_dogs.cr
 
-crystal: 0.31.0
+crystal: 1.0.2
 
 license: MIT
 
 dependencies:
-  shainet:
-    github: NeuraLegion/shainet
-    branch: master
-    # path: /Users/drujensen/workspace/crystal/deeplearning/shainet
-
-  stumpy_png:
-    github: stumpycr/stumpy_png
+  evolvenet:
+    #github: drujensen/evolvenet
+    path: /Users/drujensen/workspace/crystal/deeplearning/evolvenet
 
   magickwand-crystal:
     github: blocknotes/magickwand-crystal

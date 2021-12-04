@@ -1,22 +1,18 @@
-version: 1.0
+version: 2.0
 shards:
-  apatite:
-    github: watzon/apatite
-    commit: 420573592abf82fa139f6878491fa64f51fee55c
+  evolvenet:
+    path: /Users/drujensen/workspace/crystal/deeplearning/evolvenet
+    version: 0.1.0
 
   magickwand-crystal:
-    github: blocknotes/magickwand-crystal
+    git: https://github.com/blocknotes/magickwand-crystal.git
     version: 0.3.0
 
-  shainet:
-    github: NeuraLegion/shainet
-    commit: 456509b9983772fb710df9a50b68807af66c491d
-
   stumpy_core:
-    github: stumpycr/stumpy_core
+    git: https://github.com/stumpycr/stumpy_core.git
     version: 1.9.1
 
   stumpy_png:
-    github: stumpycr/stumpy_png
-    version: 4.5.2
+    git: https://github.com/stumpycr/stumpy_png.git
+    version: 5.0.1
 
