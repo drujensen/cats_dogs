@@ -1,10 +1,12 @@
 require "evolvenet"
 
 network = EvolveNet::NeuralNetwork.new
-network.add_layer(:input, 48, 48, 3)
-network.add_layer(:conv, 46, 46, 3)
-network.add_layer(:conv, 44, 44, 3)
-network.add_layer(:output, 2)
+network.add_layer(:input, 48, 48, 3, :none)
+network.add_layer(:conv, 46, 46, 32, :relu)
+network.add_layer(:pool, 23, 23, 32, :max)
+network.add_layer(:conv, 21, 21, 64, :relu)
+network.add_layer(:pool, 10, 10, 64, :max)
+network.add_layer(:output, 2, :sigmoid)
 network.fully_connect
 
 outcome = {
@@ -20,7 +22,7 @@ output = Array(Array(Float64)).new
   limit = 0
   files.each do |file_name|
     limit += 1
-    break if limit > 100
+    break if limit > 500
 
     image = Image.new(file_name)
     pixels = Array(Float64).new
@@ -48,7 +50,7 @@ input = Array(Array(Float64)).new
 output = Array(Array(Float64)).new
 
 ["cat", "dog"].each do |type|
-  files = Dir["./train/#{type}.3*.png"]
+  files = Dir["./train/#{type}.2*.png"]
   limit = 0
   files.each do |file_name|
     limit += 1

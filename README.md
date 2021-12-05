@@ -17,8 +17,7 @@ run `crystal src/convert.cr` to convert the training images to 50x50 greyscale
 
 To build and run using threads:
 ```
-crystal build -Dpreview_mt --release src/train.cr -o ./bin/train
-CRYSTAL_WORKERS=16 ./bin/train
+CRYSTAL_WORKERS=16 crystal run src/train.cr --release -Dpreview_mt
 ```
 
 ## Contributing
